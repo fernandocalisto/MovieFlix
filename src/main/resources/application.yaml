@@ -3,7 +3,7 @@ spring:
     name: movieflix
 
   datasource:
-    url: jdbc:postgresql://localhost:5430/movieflix
+    url: jdbc:postgresql://localhost:5432/movieflix
     username: postgres
     password: 1234
     driver-class-name: org.postgresql.Driver

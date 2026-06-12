@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController()
@@ -22,6 +23,15 @@ public class CategoryController {
     @PostMapping()
     public Category saveCategory(@RequestBody Category category) {
         return categoryService.saveCategory(category);
+    }
+
+    @GetMapping("/{id}")
+    public Category getCategoryId(@PathVariable Long id) {
+        Optional<Category> optCategory = categoryService.findCategoryById(id);
+        if (optCategory.isPresent()){
+            return optCategory.get();
+        }
+        return null;
     }
 
 }
