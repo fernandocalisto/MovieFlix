@@ -1,11 +1,17 @@
 package com.fernandocalisto.MovieFlix.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Table(name = "category")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class Category {
 
