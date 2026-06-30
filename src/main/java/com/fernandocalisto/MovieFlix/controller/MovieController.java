@@ -30,4 +30,10 @@ public class MovieController {
         List<Movie> list = service.findAll();
         return  ResponseEntity.ok(list.stream().map(MovieMapper::toMovieResponse).toList());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieResponse> findMovieById (@PathVariable Long id) {
+        return service.findMovieById(id).map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie))).
+                orElse(ResponseEntity.notFound().build());
+    }
 }
