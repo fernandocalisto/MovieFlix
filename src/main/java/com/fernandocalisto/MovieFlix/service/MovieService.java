@@ -46,12 +46,32 @@ public class MovieService {
         return categoriesFound;
     }
 
-    public List<Streaming> findStreamings (List<Streaming> streamings) {
+    public List<Streaming> findStreamings(List<Streaming> streamings) {
         List<Streaming> streamingList = new ArrayList<>();
         streamings.forEach(streaming -> {
             streamingService.findStreamingById(streaming.getId()).ifPresent(streamingList::add);
         });
         return streamingList;
+    }
+
+    public Optional<Movie> updateMovie(Long id, Movie updateMovie) {
+        Optional<Movie> optMovie = repository.findById(id);
+        if (optMovie.isPresent()) {
+            Movie movie = optMovie.get();
+            movie.setTitle(updateMovie.getTitle());
+            movie.setDescription(updateMovie.getDescription());
+            movie.setReleaseDate(updateMovie.getReleaseDate());
+            movie.setRating(updateMovie.getRating());
+
+            movie.getCategories().clear();
+            movie.getStreamings().clear();
+
+            movie.getCategories().addAll(findCategories(updateMovie.getCategories()));
+            movie.getStreamings().addAll(findStreamings(updateMovie.getStreamings()));
+
+            return Optional.of(movie);
+        }
+        return Optional.empty();
     }
 
 }
