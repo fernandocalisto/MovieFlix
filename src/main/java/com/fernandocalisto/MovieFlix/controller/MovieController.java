@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movieflix/movie")
@@ -51,5 +52,18 @@ public class MovieController {
                 .map(MovieMapper::toMovieResponse)
                 .toList();
         return ResponseEntity.ok(responses);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
+
+        Optional<Movie> optMovie = service.findMovieById(id);
+
+        if (optMovie.isPresent()) {
+            service.deleteMovie(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
