@@ -20,27 +20,36 @@ public class MovieController {
     private final MovieService service;
 
     @PostMapping
-    public ResponseEntity<MovieResponse> saveMovies (@RequestBody MovieRequest movie) {
+    public ResponseEntity<MovieResponse> saveMovies(@RequestBody MovieRequest movie) {
         Movie savedMovie = service.saveMovie(MovieMapper.toMovie(movie));
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toMovieResponse(savedMovie));
     }
 
     @GetMapping
-    public ResponseEntity<List<MovieResponse>> getMovies () {
+    public ResponseEntity<List<MovieResponse>> getMovies() {
         List<Movie> list = service.findAll();
-        return  ResponseEntity.ok(list.stream().map(MovieMapper::toMovieResponse).toList());
+        return ResponseEntity.ok(list.stream().map(MovieMapper::toMovieResponse).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieResponse> findMovieById (@PathVariable Long id) {
+    public ResponseEntity<MovieResponse> findMovieById(@PathVariable Long id) {
         return service.findMovieById(id).map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie))).
                 orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{Id}")
-    public ResponseEntity<MovieResponse> updateMovie (@PathVariable Long Id, @RequestBody MovieRequest movieRequest) {
+    @PutMapping("/{Id}")
+    public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long Id, @RequestBody MovieRequest movieRequest) {
         return service.updateMovie(Id, MovieMapper.toMovie(movieRequest))
                 .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long id) {
+        List<MovieResponse> responses = service.findByCategory(id)
+                .stream()
+                .map(MovieMapper::toMovieResponse)
+                .toList();
+        return ResponseEntity.ok(responses);
     }
 }
