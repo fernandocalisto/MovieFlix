@@ -14,3 +14,7 @@ spring:
 
   flyway:
     enabled: true
+
+movieflix:
+  security:
+    secret: "KSALJDFLKAJSFDKJAL24895703475032473N245OI239N57923405320"
